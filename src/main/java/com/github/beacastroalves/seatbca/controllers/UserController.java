@@ -38,7 +38,15 @@ public class UserController {
 
             return optional.get();
         }
-        
+
         return null;
+    }
+
+    @PostMapping
+    public User store(@RequestBody User user) {
+        if (user.getName() == null ){
+            return null;
+        }
+        return this.repository.save(user);
     }
 }
