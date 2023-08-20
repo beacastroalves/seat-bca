@@ -30,19 +30,6 @@ public class UserController {
         return this.repository.findById(id).orElse(null);
     }
 
-    @DeleteMapping("{id}")
-    public User deleteById(@PathVariable Long id) {
-        Optional<User> optional = this.repository.findById(id);
-
-        if (optional.isPresent()) {
-            this.repository.deleteById(id);
-
-            return optional.get();
-        }
-
-        return null;
-    }
-
     @PostMapping
     public User store(@RequestBody UserRequest request) {
         if (request.getName() == null ){
@@ -67,4 +54,18 @@ public class UserController {
         }
         return null;
     }
+
+    @DeleteMapping("{id}")
+    public User deleteById(@PathVariable Long id) {
+        Optional<User> optional = this.repository.findById(id);
+
+        if (optional.isPresent()) {
+            this.repository.deleteById(id);
+
+            return optional.get();
+        }
+
+        return null;
+    }
+
 }
