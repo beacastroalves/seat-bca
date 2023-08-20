@@ -1,5 +1,6 @@
 package com.github.beacastroalves.seatbca.controllers;
 
+import com.github.beacastroalves.seatbca.controllers.dto.request.UserRequest;
 import com.github.beacastroalves.seatbca.models.User;
 import com.github.beacastroalves.seatbca.repositories.UserRepository;
 import org.antlr.v4.runtime.ListTokenSource;
@@ -43,10 +44,27 @@ public class UserController {
     }
 
     @PostMapping
-    public User store(@RequestBody User user) {
-        if (user.getName() == null ){
+    public User store(@RequestBody UserRequest request) {
+        if (request.getName() == null ){
             return null;
         }
-        return this.repository.save(user);
+        return this.repository.save(new User(null, request.getName()));
+    }
+
+    @PutMapping("{id}")
+    public User updateById(@PathVariable Long id, @RequestBody UserRequest request) {
+        if (request.getName() == null ){
+            return null;
+        }
+
+        Optional<User> optional = this.repository.findById(id);
+
+        if (optional.isPresent()) {
+            User user = optional.get();
+            user.setName(request.getName());
+            return this.repository.save(user);
+
+        }
+        return null;
     }
 }
